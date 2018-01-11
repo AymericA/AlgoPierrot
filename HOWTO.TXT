@@ -1,0 +1,23 @@
+Projet moteur 3D en C
+-=============-
+Il est nécessaire d'installer la biliothèque libSDL-1.2 (les fichiers .so pour l'exécution et le paquet -dev pour avoir les .h). Une fois l'installation réalisée, on peut tester la compilation et l'exécution avec un appel à la commande
+make && ./prog
+Si tout se passe bien, alors vous pouvez commencer !
+-=============-
+Le projet est fourni avec un certain nombre de fichier PA_*.o qui contiennt les versions de démonstration des fonctions à écrire. A la fin de l'exécution du programme, vous aurez un résumé des fonctions utilisées que vous avez à re-écrire... (une indication de la charge de travail est représentée par un nombre d'étoiles plus ou moins grand).
+Attention il ne faut pas supprimer ces fichiers .o... non à aucun moment !
+Les lib_surface et lib_2d sont donnés à titre d'illustration et ne sont pas particulièrement à examiner... Votre travail devra intervenir dans les fichiers lib_3d.c, lib_objet3d.c et lib_scene3d.c
+Le code est assez peu documenté, n'hésitez pas à m'envoyer vos questions par mail (alain@enssat.fr) ou me solliciter lors d'une séance.
+-=============-
+Afin d'utiliser vos propres fonctions, vous avez à remplacer les affectations des pointeurs de fonctions dans le fichier fonctions.c. Par exemple quand vous aurez re-écrit la fonction definirPoint3d, vous aurez une ligne du genre (etu pour étudiant):
+t_point3d *(*definirPoint3d)(double x, double y, double z) = definirPoint3d_etu;
+au lieu de :
+t_point3d *(*definirPoint3d)(double x, double y, double z) = definirPoint3d_PA;
+les prototypes de ces fonctions sont définis dans des fichiers .h et les corps des fonctions dans des fichiers *etu.c.
+Lors de vos appels, vous devez bien évidement utiliser l'appel générique definirPoint3d() et non une version précise definirPoint3d_etu() ou definirPoint3d_PA().
+Votre travail consiste à écrire le corps des fonctions (actuellement il s'agit souvent d'un return NULL;).
+-=============-
+Il est conseillé de travailler en modifiant les fonctions dans un ordre croissant de difficulté (lib_3d puis lib_objet_3d, etc.). Pour les IMR, la partie lib_scene3d fait intervenir une structure de donnée non encore vue en cours (des arbres), ainsi cette partie n'est pas à traiter.
+A chaque fois, vous devez dans un premier temps comprendre la structure de donnée et écrire les fonctions permettant de manipuler les "objets" reposant sur cette structure de données.
+Pour les points en 3d et les triangles en 3d, il s'agit d'un simple type structuré, attention à un point particulier, nous utilisons des coordonnées homogènes afin de pouvoir définir une opération de translation (cf wikipédia).
+Pour les objets en 3d, la structure de données est une liste chainée de triangles en 3d. Attention, dans une cas de faces avec des points communs (dans l'espace), vous devez faire un choix consistant soit à avoir des pointeurs vers des points 3d différents (en mémoire, mais égaux dans l'espace) soit avoir des points égaux (en mémoire et dans l'espace). Ce choix aura un impact sur les fonctions de libération des triangles lors de la libération des objets et de la transformation des triangles lors de la transformation d'un objet (dans le second cas il ne faut pas appliquer deux fois la même transformation aux triangles).
